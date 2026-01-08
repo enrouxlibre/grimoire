@@ -102,7 +102,10 @@ exports.getAllBooks = (req, res, next) => {
 exports.getBestRatedBooks = (req, res, next) => {
   Book.find()
     .then((books) => {
-      const sortedBooks = books.sort((a, b) => b.rating - a.rating);
+      console.log("hello");
+      const sortedBooks = books.sort(
+        (a, b) => b.averageRating - a.averageRating
+      );
       res.status(200).json(sortedBooks.slice(0, 3));
     })
     .catch((error) => {
@@ -133,7 +136,7 @@ exports.rateBook = (req, res, next) => {
         book.averageRating = totalRating / book.ratings.length;
         book
           .save()
-          .then(() => res.status(200).json({ message: "Livre noté !" }))
+          .then(() => res.status(200).json(book))
           .catch((error) => res.status(400).json({ error }));
       }
     })

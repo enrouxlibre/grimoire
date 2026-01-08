@@ -102,7 +102,6 @@ exports.getAllBooks = (req, res, next) => {
 exports.getBestRatedBooks = (req, res, next) => {
   Book.find()
     .then((books) => {
-      console.log("hello");
       const sortedBooks = books.sort(
         (a, b) => b.averageRating - a.averageRating
       );

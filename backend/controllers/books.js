@@ -57,9 +57,9 @@ exports.modifyBook = (req, res, next) => {
       } else {
         Book.updateOne(
           { _id: req.params.id },
-          { ...bookObject, _id: req.params.id }
+          { ...bookObject, _id: req.params.id },
         )
-          .then(() => res.status(200).json({ message: "Objet modifié!" }))
+          .then(() => res.status(200).json({ message: "Livre modifié!" }))
           .catch((error) => res.status(401).json({ error }));
       }
     })
@@ -78,7 +78,7 @@ exports.deleteBook = (req, res, next) => {
         fs.unlink(`images/${filename}`, () => {
           Book.deleteOne({ _id: req.params.id })
             .then(() => {
-              res.status(200).json({ message: "Objet supprimé !" });
+              res.status(200).json({ message: "Livre supprimé !" });
             })
             .catch((error) => res.status(401).json({ error }));
         });
@@ -105,7 +105,7 @@ exports.getBestRatedBooks = (req, res, next) => {
   Book.find()
     .then((books) => {
       const sortedBooks = books.sort(
-        (a, b) => b.averageRating - a.averageRating
+        (a, b) => b.averageRating - a.averageRating,
       );
       res.status(200).json(sortedBooks.slice(0, 3));
     })
@@ -122,7 +122,7 @@ exports.rateBook = (req, res, next) => {
   Book.findOne({ _id: req.params.id })
     .then((book) => {
       const existingRating = book.ratings.find(
-        (rating) => rating.userId === userId
+        (rating) => rating.userId === userId,
       );
       if (existingRating) {
         return res
@@ -132,7 +132,7 @@ exports.rateBook = (req, res, next) => {
         book.ratings.push({ userId: userId, grade: grade });
         const totalRating = book.ratings.reduce(
           (sum, rating) => sum + rating.grade,
-          0
+          0,
         );
         book.averageRating = totalRating / book.ratings.length;
         book

@@ -7,16 +7,7 @@ const MIME_TYPES = {
   "image/webp": "webp",
 };
 
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "images");
-  },
-  filename: (req, file, callback) => {
-    const name = file.originalname.split(" ").join("_");
-    const extension = MIME_TYPES[file.mimetype];
-    callback(null, name + Date.now() + "." + extension);
-  },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, callback) => {
   if (MIME_TYPES[file.mimetype]) {
@@ -26,6 +17,8 @@ const fileFilter = (req, file, callback) => {
   }
 };
 
-module.exports = multer({ storage: storage, fileFilter: fileFilter }).single(
-  "image",
-);
+module.exports = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 5000000 },
+}).single("image");

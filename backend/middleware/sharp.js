@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     const filename = path.parse(name).name;
     req.file.filename = filename + Date.now() + ".webp";
     await sharp(req.file.buffer)
-      .resize({ width: 400 })
+      .resize({ width: 600 })
       .webp({ quality: 80 })
       .toFile(`images/${req.file.filename}`);
     next();

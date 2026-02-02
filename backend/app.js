@@ -35,4 +35,11 @@ app.use("/api/auth", userRoutes);
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+app.use((error, req, res, next) => {
+  if (error.message) {
+    return res.status(400).json({ error: error.message });
+  }
+  next(error);
+});
+
 module.exports = app;

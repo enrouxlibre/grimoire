@@ -12,7 +12,6 @@ module.exports = async (req, res, next) => {
       .toFile(`images/${req.file.filename}`);
     next();
   } catch (error) {
-    console.log("Error in sharp middleware:", error);
     res.status(500).json({ error });
   }
 };
